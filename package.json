@@ -1,0 +1,71 @@
+{
+  "name": "biojs-vis-munavi",
+  "description": "A visualisation component for multilayer networks",
+  "version": "0.1.0",
+  "homepage": "https://github.com/DennisSchwartz/biojs-vis-munavi",
+  "author": {
+    "name": "Dennis Schwartz",
+    "email": "schwartz_dennis@web.de"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DennisSchwartz/biojs-vis-munavi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DennisSchwartz/biojs-vis-munavi/issues"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "style": "css/*.css",
+  "scripts": {
+    "test": "mocha",
+    "build": "mkdirp build && browserify -r ./:biojs-vis-munavi -o build/munavi.js",
+    "build-browser": "npm run build",
+    "prepublish": "npm run build",
+    "watch": "watchify -r ./:biojs-vis-munavi -v -o build/munavi.js",
+    "lint": "jshint -c .jshintrc lib --verbose",
+    "w": "prunner \"npm run sniper\" \"npm run watch\" \"npm run watch-css\"",
+    "sniper": "sniper .",
+    "install": "undefined && npm run css",
+    "css": "parcelify ./ -c build/bundle.css",
+    "watch-css": "parcelify -w ./ -c build/bundle.css --loglevel verbose"
+  },
+  "dependencies": {
+    "lodash": "^3.10.1",
+    "ngraph.events": "0.0.3",
+    "ngraph.physics.simulator": "0.0.12",
+    "ramda": "^0.18.0",
+    "three": "^0.73.0",
+    "three.trackball": "0.0.1"
+  },
+  "devDependencies": {
+    "mkdirp": "^0.5.0",
+    "browserify": "6.x",
+    "sniper": "0.x",
+    "watchify": "^1.0.6",
+    "prunner": "1.x",
+    "parcelify": "0.x",
+    "jshint": "^2.5.10",
+    "chai": "1.x",
+    "mocha": "1.x"
+  },
+  "sniper": {
+    "js": [
+      "/build/munavi.js"
+    ],
+    "css": [
+      "/build/bundle.css"
+    ],
+    "snippets": [
+      "examples"
+    ],
+    "first": "simple"
+  },
+  "keywords": [
+    "biojs",
+    "networks",
+    "multilayer",
+    "visualisation",
+    "biojs"
+  ]
+}
