@@ -20,7 +20,7 @@ var state = {
 
     // Dennis
     menuEnabled: true,
-    cameraType: 'orthographic',
+    cameraType: '',
     layout: {
         name: 'ForceDirectedLayered'
     },
