@@ -22,8 +22,9 @@ var state = {
     menuEnabled: true,
     cameraType: 'orthographic',
     layout: {
-        name: 'Manual'
+        name: 'ForceDirectedLayered'
     },
+    interLayerDistance: 120,
 
     minZoom: 1e-50,
     maxZoom: 1e50,
