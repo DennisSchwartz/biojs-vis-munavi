@@ -54,3 +54,7 @@ var state = {
 };
 
 var instance = app.init({el: rootDiv, state: state});
+
+instance.on('change', function () {
+    console.log('test!');
+});
