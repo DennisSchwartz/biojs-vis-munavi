@@ -37,6 +37,7 @@
     "ngraph.physics.simulator": "0.0.12",
     "ramda": "^0.18.0",
     "three": "^0.73.0",
+    "three.orthographictrackball": "0.0.1",
     "three.trackball": "0.0.1"
   },
   "devDependencies": {

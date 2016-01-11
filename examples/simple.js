@@ -20,9 +20,9 @@ var state = {
 
     // Dennis
     menuEnabled: true,
-    cameraType: '',
+    cameraType: 'orthographic',
     layout: {
-        name: 'ForceDirectedLayered'
+        name: 'Manual'
     },
     interLayerDistance: 120,
 
@@ -54,3 +54,14 @@ var state = {
 };
 
 var instance = app.init({el: rootDiv, state: state});
+
+//setTimeout(test, 3000);
+
+function test () {
+    var s = instance.getState();
+    s.elements.nodelayers.forEach(function (n) {
+        var e = s.elements.elements['nl' + n.data.id];
+        e.position.x = 0;
+        e.position.y = 0;
+    })
+}
