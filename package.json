@@ -26,7 +26,6 @@
     "lint": "jshint -c .jshintrc lib --verbose",
     "w": "prunner \"npm run sniper\" \"npm run watch\" \"npm run watch-css\"",
     "sniper": "sniper .",
-    "install": "undefined && npm run css",
     "css": "parcelify ./ -c build/bundle.css",
     "watch-css": "parcelify -w ./ -c build/bundle.css --loglevel verbose"
   },
@@ -37,7 +36,7 @@
     "ngraph.physics.simulator": "0.0.12",
     "ramda": "^0.18.0",
     "three": "^0.73.0",
-    "three.orthographictrackball": "0.0.1",
+    "three.orthographictrackball": "^0.0.2",
     "three.trackball": "0.0.1"
   },
   "devDependencies": {

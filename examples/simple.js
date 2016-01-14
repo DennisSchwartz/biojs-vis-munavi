@@ -55,13 +55,38 @@ var state = {
 
 var instance = app.init({el: rootDiv, state: state});
 
-//setTimeout(test, 3000);
+// Update state with new position!
+
+var newState = {
+    elements: JSON.parse('\
+    {\
+        "elements": {\
+                "nlB1": {\
+                    "group": "nodelayers",\
+                    "data": {\
+                        "id": "B1",\
+                        "layer": "1",\
+                        "node": "B1"\
+                     },\
+                    "position": {\
+                        "x": "0",\
+                        "y": "0",\
+                        "z": "0"\
+                    }\
+                 }\
+        }\
+    }')
+};
+
+
+setTimeout(test, 500);
 
 function test () {
-    var s = instance.getState();
-    s.elements.nodelayers.forEach(function (n) {
-        var e = s.elements.elements['nl' + n.data.id];
-        e.position.x = 0;
-        e.position.y = 0;
-    })
+    instance.update(newState, 'elements.elements.nlB1.position[*]');
+    //var s = instance.getState();
+    //s.elements.nodelayers.forEach(function (n) {
+    //    var e = s.elements.elements['nl' + n.data.id];
+    //    e.position.x = 0;
+    //    e.position.y = 0;
+    //})
 }
