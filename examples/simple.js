@@ -82,7 +82,7 @@ var newState = {
 setTimeout(test, 500);
 
 function test () {
-    instance.update(newState, 'elements.elements.nlB1.position[*]');
+    instance.update(newState, 'elements.elements.nlB1.position');
     //var s = instance.getState();
     //s.elements.nodelayers.forEach(function (n) {
     //    var e = s.elements.elements['nl' + n.data.id];

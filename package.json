@@ -30,6 +30,7 @@
     "watch-css": "parcelify -w ./ -c build/bundle.css --loglevel verbose"
   },
   "dependencies": {
+    "jquery": "^2.2.0",
     "jsonpath-plus": "^0.13.1",
     "lodash": "^3.10.1",
     "ngraph.events": "0.0.3",
