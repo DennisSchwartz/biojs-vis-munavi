@@ -55,6 +55,11 @@ var state = {
 
 var instance = app.init({el: rootDiv, state: state});
 
+instance.onChange(function (obj) {
+   console.log(obj);
+});
+
+
 // Update state with new position!
 
 var newState = {
