@@ -14,6 +14,7 @@ httpGetAsync('http://localhost:8080', function (res) {
 
 function init( data ) {
 // state is the object that describes the whole view
+    console.log(data);
     var state = {
         container: container,
         elements: data,
@@ -37,26 +38,29 @@ function init( data ) {
         menuEnabled: true,
         cameraType: '',//'orthographic',
         layout: {
-            name: 'Fixed'
+            name: 'Manual'
         },
-        interLayerDistance: 120,
+        interLayerDistance: 800,
+        nodesize: 100,
+        normalisation: 'log',
+
 
         physicsSettings: {
             /**
              * Ideal length for links (springs in physical model).
              */
-            springLength: 100,
+            springLength: 1500,
 
             /**
              * Hook's law coefficient. 1 - solid spring.
              */
-            springCoeff: 0.0008,
+            springCoeff: 0.00008,
 
             /**
              * Coulomb's law coefficient. It's used to repel nodes thus should be negative
              * if you make it positive nodes start attract each other :).
              */
-            gravity: -1.0,
+            gravity: -2.0,
 
             /**
              * Theta coefficient from Barnes Hut simulation. Ranged between (0, 1).
