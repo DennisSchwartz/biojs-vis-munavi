@@ -3,20 +3,56 @@
  */
 
 // if you don't specify a html file, the sniper will generate a div with id "rootDiv"
-var app = require("biojs-vis-munavi");
 
 var container = document.getElementById('rootDiv');
+container.style.height = "100%";
 
-httpGetAsync('http://localhost:8080', function (res) {
-    console.log("SUCCESS: Received data!");
-    init( JSON.parse(res) );
-});
+console.log(container);
+
+//var modal = document.createElement("div");
+//modal.id = 'loadingAnimation';
+//modal.classList.add("modal");
+//modal.innerHTML += "<h1>Loading...</h1>";
+//var body  = document.getElementsByTagName("body");
+//container.appendChild(modal);
+
+//httpGetAsync('http://localhost:8080', function (res) {
+//    console.log("SUCCESS: Received data!");
+//    init( JSON.parse(res) );
+//});
+
+var testData = [{
+    type: "url",
+    url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Drosophila-Notch-TGF-WNT-No-TF.csv"
+},
+    {
+        type: "url",
+        url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Human-Notch-TGF-WNT-No-TF.csv"
+
+    }];
+
+for (var i = 0; i < testData.length; i++) {
+    httpPostAsync('http://localhost:8080/', testData[i], function (res) {
+        console.log("SUCCESS: Received data!");
+        var container = document.getElementById('rootDiv');
+        var visCont = document.createElement("div");
+        visCont.id = "div" + makeid();
+        visCont.style.height = "300px";
+        container.appendChild(visCont);
+        var data = JSON.parse(res);
+        data.container = visCont;
+        console.log(data);
+        init( data );
+    })
+}
 
 function init( data ) {
 // state is the object that describes the whole view
-    console.log(data);
+//    var modal = document.getElementById("loadingAnimation");
+//    container.removeChild(modal);
+    console.log(data.container);
     var state = {
-        container: container,
+        container: data.container || '',
         elements: data,
         //style: [ {
         //    selector: 'node',
@@ -25,7 +61,8 @@ function init( data ) {
         //    }
         //}],
         style: {
-            colorByLayer: true
+            colorByLayer: true,
+            layerLabels: true
         },
         ready: function (evt) { /* ... */
         },
@@ -114,8 +151,8 @@ function init( data ) {
         },
         renderer: {/* ... */}
     };
-
-    var instance = app.init({el: rootDiv, state: state});
+    var app = require("biojs-vis-munavi");
+    var instance = app.init({el: state.container, state: state});
 }
 
 function httpGetAsync(theUrl, callback)
@@ -127,4 +164,30 @@ function httpGetAsync(theUrl, callback)
     };
     xmlHttp.open("GET", theUrl, true); // true for asynchronous
     xmlHttp.send(null);
+}
+
+function httpPostAsync(url, data, callback) {
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if ( xhttp.readyState === 4 && xhttp.status === 200 ) {
+            console.log("Success!");
+            callback(xhttp.responseText);
+        }
+    };
+    xhttp.open("POST", url, true);
+    xhttp.setRequestHeader("Content-Type", "application/json");
+    xhttp.send(JSON.stringify(data));
+
+}
+
+// http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
+function makeid()
+{
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+    return text;
 }
