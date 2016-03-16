@@ -25,13 +25,13 @@ console.log(container);
 var testData = [
     {
         type: "url",
-        url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Drosophila-Notch-TGF-WNT-No-TF.csv"
-    },
-    {
-        type: "url",
-        url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Human-Notch-TGF-WNT-No-TF.csv"
-
+        url: "Drosophila-Notch-TGF-WNT-No-TF.csv"
     }
+    //{
+    //    type: "url",
+    //    url: "Human-Notch-TGF-WNT-No-TF.csv"
+    //
+    //}
 ];
 
 for (var i = 0; i < testData.length; i++) {
@@ -54,7 +54,8 @@ function init( data, id ) {
 // state is the object that describes the whole view
 //    var modal = document.getElementById("loadingAnimation");
 //    container.removeChild(modal);
-    console.log(data.container);
+    console.log("HERE COMES THE DATA!!:");
+    console.log(data);
 
     var app = require("biojs-vis-munavi");
     //var instance = app.init({el: state.container, state: state});
