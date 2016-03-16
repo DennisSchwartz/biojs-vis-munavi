@@ -7,6 +7,7 @@
 var container = document.getElementById('rootDiv');
 container.style.height = "100%";
 
+var instances = {};
 console.log(container);
 
 //var modal = document.createElement("div");
@@ -21,37 +22,46 @@ console.log(container);
 //    init( JSON.parse(res) );
 //});
 
-var testData = [{
-    type: "url",
-    url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Drosophila-Notch-TGF-WNT-No-TF.csv"
-},
+var testData = [
+    {
+        type: "url",
+        url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Drosophila-Notch-TGF-WNT-No-TF.csv"
+    },
     {
         type: "url",
         url: "/Users/ds/Documents/Code/Thesis/BioJS/Data/slk2/Human-Notch-TGF-WNT-No-TF.csv"
 
-    }];
+    }
+];
 
 for (var i = 0; i < testData.length; i++) {
     httpPostAsync('http://localhost:8080/', testData[i], function (res) {
         console.log("SUCCESS: Received data!");
         var container = document.getElementById('rootDiv');
         var visCont = document.createElement("div");
-        visCont.id = "div" + makeid();
+        var id = makeid();
+        visCont.id = "div" + id;
         visCont.style.height = "300px";
         container.appendChild(visCont);
         var data = JSON.parse(res);
         data.container = visCont;
         console.log(data);
-        init( data );
+        init( data, id );
     })
 }
 
-function init( data ) {
+function init( data, id ) {
 // state is the object that describes the whole view
 //    var modal = document.getElementById("loadingAnimation");
 //    container.removeChild(modal);
     console.log(data.container);
-    var state = {
+
+    var app = require("biojs-vis-munavi");
+    //var instance = app.init({el: state.container, state: state});
+
+    instances[id] = new app();
+
+    instances[id].init({el: data.container, state: {
         container: data.container || '',
         elements: data,
         //style: [ {
@@ -150,9 +160,8 @@ function init( data ) {
         initrender: function (evt) { /* ... */
         },
         renderer: {/* ... */}
-    };
-    var app = require("biojs-vis-munavi");
-    var instance = app.init({el: state.container, state: state});
+    }});
+    console.log(app);
 }
 
 function httpGetAsync(theUrl, callback)
