@@ -27,11 +27,11 @@ var testData = [
         type: "url",
         url: "Drosophila-Notch-TGF-WNT-No-TF.csv"
     }
-    //{
-    //    type: "url",
-    //    url: "Human-Notch-TGF-WNT-No-TF.csv"
-    //
-    //}
+    ,{
+        type: "url",
+        url: "Human-Notch-TGF-WNT-No-TF.csv"
+
+    }
 ];
 
 for (var i = 0; i < testData.length; i++) {
@@ -60,9 +60,7 @@ function init( data, id ) {
     var app = require("biojs-vis-munavi");
     //var instance = app.init({el: state.container, state: state});
 
-    instances[id] = new app();
-
-    instances[id].init({el: data.container, state: {
+    var state =  {
         container: data.container || '',
         elements: data,
         //style: [ {
@@ -161,7 +159,11 @@ function init( data, id ) {
         initrender: function (evt) { /* ... */
         },
         renderer: {/* ... */}
-    }});
+    };
+
+    instances[id] = new app(data.container, state);
+
+    instances[id].init();
     console.log(app);
 }
 
