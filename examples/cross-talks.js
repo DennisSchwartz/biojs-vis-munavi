@@ -6,6 +6,7 @@
 
 var container = document.getElementById('rootDiv');
 container.style.height = "100%";
+container.classList.add("row");
 
 var instances = {};
 console.log(container);
@@ -32,6 +33,11 @@ var testData = [
         url: "Human-Notch-TGF-WNT-No-TF.csv"
 
     }
+    ,{
+        type: "url",
+        url: "Core-Human-Notch-TGF-WNT-No-TF.csv"
+    }
+
 ];
 
 for (var i = 0; i < testData.length; i++) {
@@ -41,7 +47,8 @@ for (var i = 0; i < testData.length; i++) {
         var visCont = document.createElement("div");
         var id = makeid();
         visCont.id = "div" + id;
-        visCont.style.height = "300px";
+        visCont.style.height = "100vh";
+        visCont.classList.add("col-3");
         container.appendChild(visCont);
         var data = JSON.parse(res);
         data.container = visCont;
@@ -164,7 +171,15 @@ function init( data, id ) {
     instances[id] = new app(data.container, state);
 
     instances[id].init();
-    console.log(app);
+    // Get first instance camera
+    for (var prop in instances) {
+        if (instances.hasOwnProperty(prop)) {
+            var testCam = instances[prop].state.camera;
+        }
+        break;
+    }
+    instances[id].state.camera.position = testCam.position;
+    console.log(instances[id].state.camera);
 }
 
 function httpGetAsync(theUrl, callback)
