@@ -1,82 +1,20 @@
 /**
- * Created by ds on 10/02/16.
+ * Created by ds on 28/03/2016.
  */
 
-// if you don't specify a html file, the sniper will generate a div with id "rootDiv"
 
-var container = document.getElementById('rootDiv');
-container.style.height = "100%";
-container.classList.add("row");
 
-var instances = {};
-console.log(container);
 
-//var modal = document.createElement("div");
-//modal.id = 'loadingAnimation';
-//modal.classList.add("modal");
-//modal.innerHTML += "<h1>Loading...</h1>";
-//var body  = document.getElementsByTagName("body");
-//container.appendChild(modal);
+var data = { type: "url", url: "Core-Human-Notch-TGF-WNT-No-TF.csv" };
 
-//httpGetAsync('http://localhost:8080', function (res) {
-//    console.log("SUCCESS: Received data!");
-//    init( JSON.parse(res) );
-//});
-
-var testData = [
-    {
-        type: "url",
-        url: "Drosophila-Notch-TGF-WNT-No-TF.csv"
-    }
-    ,{
-        type: "url",
-        url: "Core-Human-Notch-TGF-WNT-No-TF.csv"
-
-    }
-    //,{
-    //    type: "url",
-    //    url: "Elegans-Notch-TGF-WNT-No-TF.csv"
-    //}
-];
-
-for (var i = 0; i < testData.length; i++) {
-    httpPostAsync('http://localhost:8080/', testData[i], function (res) {
-        console.log("SUCCESS: Received data!");
-        var container = document.getElementById('rootDiv');
-        var grpCont = document.createElement("div");
-        var visCont = document.createElement("div");
-        var id = makeid();
-        visCont.id = "div" + id;
-        visCont.style.height = "100%";
-        visCont.classList.add("col-2");
-        visCont.classList.add("panel");
-        container.appendChild(visCont);
-        var data = JSON.parse(res);
-        data.container = visCont;
-        console.log(data);
-        init( data, id );
-    })
-}
-
-//var container = document.getElementById('rootDiv');
-//var panel1 = document.createElement("div");
-//var header1 = document.createElement("div");
-//var vis1 = document.createElement("div");
-
-function init( data, id ) {
-// state is the object that describes the whole view
-//    var modal = document.getElementById("loadingAnimation");
-//    container.removeChild(modal);
-    console.log("HERE COMES THE DATA!!:");
-    console.log(data);
-
-    var app = require("biojs-vis-munavi");
-    //var instance = app.init({el: state.container, state: state});
-
+httpPostAsync('http://localhost:8080/create', JSON.stringify(data), function (res) {
+    var app = require('biojs-vis-munavi');
+    var container = document.getElementById("rootDiv2");
+    var data = JSON.parse(res);
     var state =  {
-        container: data.container || '',
-        id: "div" + id,
+        container: container || '',
         elements: data,
+        id: 'rootDiv2',
         //style: [ {
         //    selector: 'node',
         //    style: {
@@ -99,9 +37,9 @@ function init( data, id ) {
         // Dennis
         directed: true,
         menuEnabled: true,
-        cameraType: '',//'orthographic',
+        cameraType: 'orthographic',
         layout: {
-            name: 'Manual'
+            name: 'Circle'
         },
         interLayerDistance: 800,
         nodesize: 100,
@@ -186,36 +124,10 @@ function init( data, id ) {
         },
         renderer: {/* ... */}
     };
+    var instance = new app(container, state);
+    instance.init();
+});
 
-    instances[id] = new app(data.container, state);
-
-    instances[id].init();
-    // Get first instance camera
-    for (var prop in instances) {
-        if (instances.hasOwnProperty(prop)) {
-            var testCam = instances[prop].state.camera;
-        }
-        break;
-    }
-    instances[id].state.camera.position = testCam.position;
-    console.log(instances[id].state.camera);
-
-
-
-
-
-}
-
-function httpGetAsync(theUrl, callback)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
-    };
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous
-    xmlHttp.send(null);
-}
 
 function httpPostAsync(url, data, callback) {
     var xhttp = new XMLHttpRequest();
@@ -227,18 +139,6 @@ function httpPostAsync(url, data, callback) {
     };
     xhttp.open("POST", url, true);
     xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send(JSON.stringify(data));
+    xhttp.send(data);//JSON.stringify(data));
 
-}
-
-// http://stackoverflow.com/questions/1349404/generate-a-string-of-5-random-characters-in-javascript
-function makeid()
-{
-    var text = "";
-    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-    for( var i=0; i < 5; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-    return text;
 }
