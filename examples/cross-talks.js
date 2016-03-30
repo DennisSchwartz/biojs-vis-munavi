@@ -28,11 +28,11 @@ var testData = [
         type: "url",
         url: "Drosophila-Notch-TGF-WNT-No-TF.csv"
     }
-    //,{
-    //    type: "url",
-    //    url: "Core-Human-Notch-TGF-WNT-No-TF.csv"
-    //
-    //}
+    ,{
+        type: "url",
+        url: "Core-Human-Notch-TGF-WNT-No-TF.csv"
+
+    }
     //,{
     //    type: "url",
     //    url: "Elegans-Notch-TGF-WNT-No-TF.csv"
@@ -43,14 +43,20 @@ for (var i = 0; i < testData.length; i++) {
     httpPostAsync('http://localhost:8080/', testData[i], function (res) {
         console.log("SUCCESS: Received data!");
         var container = document.getElementById('rootDiv');
-        var grpCont = document.createElement("div");
+        var grpCont = document.getElementById("grp");
+        if (!grpCont) {
+            grpCont = document.createElement("div");
+            grpCont.classList.add("row");
+            grpCont.id = "grp";
+            container.appendChild(grpCont);
+        }
         var visCont = document.createElement("div");
         var id = makeid();
         visCont.id = "div" + id;
-        visCont.style.height = "100%";
+        visCont.style.height = "50%";
         visCont.classList.add("col-2");
         visCont.classList.add("panel");
-        container.appendChild(visCont);
+        grpCont.appendChild(visCont);
         var data = JSON.parse(res);
         data.container = visCont;
         console.log('DATA:');
@@ -61,14 +67,21 @@ for (var i = 0; i < testData.length; i++) {
             var packedNetwork = { network: JSON.stringify(network) };
             httpPostAsync('http://localhost:8080/aggregate', packedNetwork, function (res, err) {
                 var container = document.getElementById('rootDiv');
-                var grpCont = document.createElement("div");
+                var grpCont = document.getElementById("grp");
+                var rowCont = document.getElementById("row2");
+                if (!rowCont) {
+                    rowCont = document.createElement("div");
+                    rowCont.classList.add("row");
+                    rowCont.id = "row2";
+                    grpCont.appendChild(rowCont);
+                }
                 var visCont = document.createElement("div");
                 var id = makeid();
                 visCont.id = "div" + id;
-                visCont.style.height = "100%";
+                visCont.style.height = "50%";
                 visCont.classList.add("col-2");
                 visCont.classList.add("panel");
-                container.appendChild(visCont);
+                rowCont.appendChild(visCont);
                 var data = JSON.parse(res);
                 data.container = visCont;
                 var app = require('biojs-vis-munavi');
@@ -87,7 +100,8 @@ for (var i = 0; i < testData.length; i++) {
                         layerLabels: true,
                         edgeColor: "#ffffff",
                         backgroundColor: "#000000",
-                        labelColor: "#ffffff"
+                        labelColor: "#ffffff",
+                        colorKey: false
                     },
                     ready: function (evt) { /* ... */
                     },
@@ -99,6 +113,11 @@ for (var i = 0; i < testData.length; i++) {
                     directed: true,
                     menuEnabled: true,
                     cameraType: '',//'orthographic',
+                    cameraPosition: {
+                        x: 0,
+                        y: 0,
+                        z: 5000
+                    },
                     layout: {
                         name: 'Circle'
                     },
@@ -154,8 +173,8 @@ for (var i = 0; i < testData.length; i++) {
 
                     minZoom: 1e-50,
                     maxZoom: 1e50,
-                    zoomingEnabled: true,
-                    userZoomingEnabled: true,
+                    zoomingEnabled: false,
+                    userZoomingEnabled: false,
                     panningEnabled: true,
                     userPanningEnabled: true,
                     boxSelectionEnabled: false,
@@ -218,7 +237,8 @@ function init( data, id, callback ) {
             layerLabels: true,
             edgeColor: "#ffffff",
             backgroundColor: "#000000",
-            labelColor: "#ffffff"
+            labelColor: "#ffffff",
+            colorKey: true
         },
         ready: function (evt) { /* ... */
         },
@@ -230,6 +250,11 @@ function init( data, id, callback ) {
         directed: true,
         menuEnabled: true,
         cameraType: '',//'orthographic',
+        cameraPosition: {
+            x: 0,
+            y: 0,
+            z: 5000
+        },
         layout: {
             name: 'Manual'
         },
