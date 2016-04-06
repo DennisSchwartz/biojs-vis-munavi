@@ -30,7 +30,6 @@
     "watch-css": "parcelify -w ./ -c build/bundle.css --loglevel verbose"
   },
   "dependencies": {
-    "biojs-io-munemo": "file:../biojs-io-munemo/biojs-io-munemo-0.0.1.tgz",
     "jquery": "^2.2.0",
     "jsonpath-plus": "^0.13.1",
     "lodash": "^3.10.1",

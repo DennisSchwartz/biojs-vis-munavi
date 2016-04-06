@@ -9,7 +9,6 @@ container.style.height = "100%";
 container.classList.add("row");
 
 var instances = {};
-console.log(container);
 
 //var modal = document.createElement("div");
 //modal.id = 'loadingAnimation';
@@ -23,25 +22,24 @@ console.log(container);
 //    init( JSON.parse(res) );
 //});
 
-var testData = [
+const testData = [
     {
         type: "url",
-        url: "Drosophila-Notch-TGF-WNT-No-TF.csv"
-    }
-    ,{
-        type: "url",
-        url: "Core-Human-Notch-TGF-WNT-No-TF.csv"
-
+        url: "Human-AllPW-ExOnly-NoTF.csv"
     }
     //,{
     //    type: "url",
-    //    url: "Elegans-Notch-TGF-WNT-No-TF.csv"
+    //    url: "Drosophila-AllPW-ExOnly-NoTF.csv"
+    //
     //}
+//,    {
+//        type: "url",
+//        url: "Elegans-AllPW-ExOnly-NoTF.csv"
+//    }
 ];
 
 for (var i = 0; i < testData.length; i++) {
     httpPostAsync('http://localhost:8080/', testData[i], function (res) {
-        console.log("SUCCESS: Received data!");
         var container = document.getElementById('rootDiv');
         var grpCont = document.getElementById("grp");
         if (!grpCont) {
@@ -53,14 +51,12 @@ for (var i = 0; i < testData.length; i++) {
         var visCont = document.createElement("div");
         var id = makeid();
         visCont.id = "div" + id;
-        visCont.style.height = "50%";
-        visCont.classList.add("col-2");
+        visCont.style.height = "70%";
+        visCont.classList.add("col-" + testData.length);
         visCont.classList.add("panel");
         grpCont.appendChild(visCont);
         var data = JSON.parse(res);
         data.container = visCont;
-        console.log('DATA:');
-        console.log(data);
 
         // Initialize network and create aggregate when ready
         init( data, id , function (network) {
@@ -78,8 +74,8 @@ for (var i = 0; i < testData.length; i++) {
                 var visCont = document.createElement("div");
                 var id = makeid();
                 visCont.id = "div" + id;
-                visCont.style.height = "50%";
-                visCont.classList.add("col-2");
+                visCont.style.height = "30%";
+                visCont.classList.add("col-" + testData.length);
                 visCont.classList.add("panel");
                 rowCont.appendChild(visCont);
                 var data = JSON.parse(res);
@@ -98,6 +94,7 @@ for (var i = 0; i < testData.length; i++) {
                     style: {
                         colorByLayer: true,
                         layerLabels: true,
+                        colorByWeight: true,
                         edgeColor: "#ffffff",
                         backgroundColor: "#000000",
                         labelColor: "#ffffff",
@@ -112,11 +109,13 @@ for (var i = 0; i < testData.length; i++) {
                     // Dennis
                     directed: true,
                     menuEnabled: true,
-                    cameraType: '',//'orthographic',
-                    cameraPosition: {
-                        x: 0,
-                        y: 0,
-                        z: 5000
+                    camera: {
+                        type: '',
+                        position: {
+                            x: 0,
+                            y: 0,
+                            z: 3000
+                        }
                     },
                     layout: {
                         name: 'Circle'
@@ -173,7 +172,7 @@ for (var i = 0; i < testData.length; i++) {
 
                     minZoom: 1e-50,
                     maxZoom: 1e50,
-                    zoomingEnabled: false,
+                    interactive: false,
                     userZoomingEnabled: false,
                     panningEnabled: true,
                     userPanningEnabled: true,
@@ -216,8 +215,6 @@ function init( data, id, callback ) {
 // state is the object that describes the whole view
 //    var modal = document.getElementById("loadingAnimation");
 //    container.removeChild(modal);
-    console.log("HERE COMES THE DATA!!:");
-    console.log(data);
 
     var app = require("biojs-vis-munavi");
     //var instance = app.init({el: state.container, state: state});
@@ -235,6 +232,7 @@ function init( data, id, callback ) {
         style: {
             colorByLayer: true,
             layerLabels: true,
+            colorByWeight: true,
             edgeColor: "#ffffff",
             backgroundColor: "#000000",
             labelColor: "#ffffff",
@@ -249,28 +247,40 @@ function init( data, id, callback ) {
         // Dennis
         directed: true,
         menuEnabled: true,
-        cameraType: '',//'orthographic',
-        cameraPosition: {
-            x: 0,
-            y: 0,
-            z: 5000
+        camera: {
+            type: '',
+            position: {
+                x: 0,
+                y: 0,
+                z: 5000
+            }
         },
         layout: {
-            name: 'Manual'
+            name: 'Circle'
         },
         interLayerDistance: 800,
         nodesize: 100,
         normalisation: 'log',
-        layerOrder: [
-            'Transcriptionalregulation',
-            'Post-transcriptionalregulation',
-            'Post-translationalmodification',
-            'Directedprotein-proteininteraction',
-            'Pathwayregulation',
-            'Interactionbetweenpathwaymembers',
-            'interactionfromexternaldatabases'
-        ],
-
+        orderOfElements: {
+            layers: [
+                'Transcriptionalregulation',
+                'Post-transcriptionalregulation',
+                'Post-translationalmodification',
+                'Directedprotein-proteininteraction',
+                'Pathwayregulation',
+                'Interactionbetweenpathwaymembers',
+                'interactionfromexternaldatabases'
+            ],
+            nodes: [
+                'Notch',
+                'WNT/Wingless',
+                'RTK',
+                'TGF',
+                'NHR',
+                "JAK/STAT",
+                "Hedgehog"
+            ]
+        },
 
         physicsSettings: {
             /**
@@ -316,7 +326,7 @@ function init( data, id, callback ) {
 
         minZoom: 1e-50,
         maxZoom: 1e50,
-        zoomingEnabled: true,
+        interactive: true,
         userZoomingEnabled: true,
         panningEnabled: true,
         userPanningEnabled: true,

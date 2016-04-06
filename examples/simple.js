@@ -23,7 +23,9 @@ var state = {
 
     // Dennis
     menuEnabled: true,
-    cameraType: '',//'orthographic',
+    camera: {
+        type: '' //'orthographic'
+    },
     layout: {
         name: 'Fixed'
     },

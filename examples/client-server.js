@@ -5,7 +5,7 @@
 
 
 
-var data = { type: "url", url: "Core-Human-Notch-TGF-WNT-No-TF.csv" };
+var data = { type: "url", url: "Human-AllPW-ExOnly-NoTF.csv" };
 
 httpPostAsync('http://localhost:8080/create', JSON.stringify(data), function (res) {
     var app = require('biojs-vis-munavi');
@@ -37,22 +37,35 @@ httpPostAsync('http://localhost:8080/create', JSON.stringify(data), function (re
         // Dennis
         directed: true,
         menuEnabled: true,
-        cameraType: 'orthographic',
+        camera: {
+            type: ''
+        },
         layout: {
             name: 'Circle'
         },
         interLayerDistance: 800,
         nodesize: 100,
         normalisation: 'log',
-        layerOrder: [
-            'Transcriptionalregulation',
-            'Post-transcriptionalregulation',
-            'Post-translationalmodification',
-            'Directedprotein-proteininteraction',
-            'Pathwayregulation',
-            'Interactionbetweenpathwaymembers',
-            'interactionfromexternaldatabases'
-        ],
+        orderOfElements: {
+            layers: [
+                'Transcriptionalregulation',
+                'Post-transcriptionalregulation',
+                'Post-translationalmodification',
+                'Directedprotein-proteininteraction',
+                'Pathwayregulation',
+                'Interactionbetweenpathwaymembers',
+                'interactionfromexternaldatabases'
+            ],
+            nodes: [
+                'Notch',
+                'WNT/Wingless',
+                'RTK',
+                'TGF',
+                'NHR',
+                "JAK/STAT",
+                "Hedgehog"
+            ]
+        },
 
 
         physicsSettings: {
