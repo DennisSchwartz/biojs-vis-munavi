@@ -25,21 +25,24 @@ var instances = {};
 const testData = [
     {
         type: "url",
-        url: "Human-AllPW-ExOnly-NoTF.csv"
+        url: "Human-All-NoTF.csv",
+        name: "Human"
     }
-    //,{
-    //    type: "url",
-    //    url: "Drosophila-AllPW-ExOnly-NoTF.csv"
-    //
-    //}
-//,    {
-//        type: "url",
-//        url: "Elegans-AllPW-ExOnly-NoTF.csv"
-//    }
+    ,{
+        type: "url",
+        url: "Drosophila-All-NoTF.csv",
+        name: "D. Melanogaster"
+
+    }
+    ,{
+        type: "url",
+        url: "Elegans-All-NoTF.csv",
+        name: "C. Elegans"
+    }
 ];
 
 for (var i = 0; i < testData.length; i++) {
-    httpPostAsync('http://localhost:8080/', testData[i], function (res) {
+    httpPostAsync('http://localhost:8080/', testData[i], function (res, name) {
         var container = document.getElementById('rootDiv');
         var grpCont = document.getElementById("grp");
         if (!grpCont) {
@@ -54,6 +57,10 @@ for (var i = 0; i < testData.length; i++) {
         visCont.style.height = "70%";
         visCont.classList.add("col-" + testData.length);
         visCont.classList.add("panel");
+        var header = document.createElement("h2");
+        header.innerHTML = name;
+        header.classList.add("center");
+        visCont.appendChild(header);
         grpCont.appendChild(visCont);
         var data = JSON.parse(res);
         data.container = visCont;
@@ -114,7 +121,7 @@ for (var i = 0; i < testData.length; i++) {
                         position: {
                             x: 0,
                             y: 0,
-                            z: 3000
+                            z: 5000
                         }
                     },
                     layout: {
@@ -259,6 +266,7 @@ function init( data, id, callback ) {
             name: 'Circle'
         },
         interLayerDistance: 800,
+        planes: true,
         nodesize: 100,
         normalisation: 'log',
         orderOfElements: {
@@ -356,6 +364,14 @@ function init( data, id, callback ) {
 
     instances[id].init();
 
+    for (var prop in instances) {
+        if (instances.hasOwnProperty(prop)) {
+            var testCam = instances[prop].state.camera;
+        }
+        break;
+    }
+    instances[id].state.camera = testCam;
+
     var temp = instances[id].state.elements;
     var returnElements = {};
 
@@ -378,13 +394,7 @@ function init( data, id, callback ) {
     }
     callback(returnElements);
     // Get first instance camera
-    //for (var prop in instances) {
-    //    if (instances.hasOwnProperty(prop)) {
-    //        var testCam = instances[prop].state.camera;
-    //    }
-    //    break;
-    //}
-    //instances[id].state.camera.position = testCam.position;
+
     //console.log(instances[id].state.camera);
     //console.log(instances[id].state.elements);
     //var returnElements = Object.assign({}, instances[id].state.elements); // Clone network
@@ -420,7 +430,7 @@ function httpPostAsync(url, data, callback) {
     xhttp.onreadystatechange = function () {
         if ( xhttp.readyState === 4 && xhttp.status === 200 ) {
             console.log("Success!");
-            callback(xhttp.responseText);
+            callback(xhttp.responseText, data.name);
         }
     };
     xhttp.open("POST", url, true);
